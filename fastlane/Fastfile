@@ -1,0 +1,185 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Build App Local"
+  lane :build_local do
+    make_build_folder
+    build_ios_app(
+      scheme: "TheLastProject_Development", 
+      workspace: "TheLastProject.xcworkspace",
+      configuration: "Debug", 
+      export_method: "development",
+      output_directory: "./build",
+      output_name: "TheLastProject_Dev.ipa",
+      silent: true,
+      clean: true
+    )
+    create_release_notes(format: 'Appstore: %h %s')
+    upload_fabric(groups: "develop")
+  end
+
+  desc "Build App AdHoc Local"
+  lane :build_adhoc_local do
+    make_build_folder
+    build_ios_app(
+      scheme: "TheLastProject_Staging", 
+      workspace: "TheLastProject.xcworkspace",
+      configuration: "Staging", 
+      export_method: "ad-hoc",
+      output_directory: "./build",
+      output_name: "TheLastProject_Staging.ipa",
+      silent: true,
+      clean: true
+    )
+  end
+
+  desc "Build Dev"
+  lane :build_dev do
+    make_build_folder
+    disable_automatic_code_signing(
+      path: "TheLastProject.xcodeproj"
+    )
+    import_certificate(
+      keychain_name: "ios-build.keychain",
+      keychain_password: ENV["KEYCHAIN_PASS"],
+      certificate_path: "./scripts/certs/dev.p12",
+      certificate_password: ENV["CERT_PASS"]
+    )
+    update_project_provisioning(
+      xcodeproj: "TheLastProject.xcodeproj",
+      profile: "./scripts/profiles/TheLastProject_Dev.mobileprovision",
+      target_filter: "TheLastProject",
+      build_configuration: "Debug",
+    )
+    build_ios_app(
+      scheme: "TheLastProject_Development", 
+      workspace: "TheLastProject.xcworkspace",
+      configuration: "Debug", 
+      export_method: "development",
+      output_directory: "./build",
+      silent: true,
+      clean: true,
+      skip_profile_detection: true,
+      export_options: {
+        provisioningProfiles: { "com.fx.thelastproject": "TheLastProject_Dev" }
+      }
+    )
+    create_release_notes(format: 'Appstore: %h %s')
+    upload_fabric(groups: "develop")
+    enable_automatic_code_signing(
+      path: "TheLastProject.xcodeproj"
+    )
+  end
+
+  desc "Build Staging"
+  lane :build_staging do
+    make_build_folder
+    disable_automatic_code_signing(
+      path: "TheLastProject.xcodeproj"
+    )
+    import_certificate(
+      keychain_name: "ios-build.keychain",
+      keychain_password: ENV["KEYCHAIN_PASS"],
+      certificate_path: "./scripts/certs/dis.p12",
+      certificate_password: ENV["CERT_PASS"]
+    )
+    update_project_provisioning(
+      xcodeproj: "TheLastProject.xcodeproj",
+      profile: "./scripts/profiles/TheLastProject_AdHoc.mobileprovision",
+      target_filter: "TheLastProject",
+      build_configuration: "Staging",
+    )
+    build_ios_app(
+      scheme: "TheLastProject_Staging", 
+      workspace: "TheLastProject.xcworkspace",
+      configuration: "Staging", 
+      export_method: "ad-hoc",
+      output_directory: "./build",
+      silent: true,
+      clean: true,
+      skip_profile_detection: true,
+      export_options: {
+        provisioningProfiles: { "com.fx.thelastproject": "TheLastProject_AdHoc" }
+      }
+    )
+    create_release_notes(format: 'Appstore: %h %s')
+    upload_fabric(groups: "staging")
+    enable_automatic_code_signing(
+      path: "TheLastProject.xcodeproj"
+    )
+  end
+
+  desc "Build Release"
+  lane :build_release do
+    make_build_folder
+    disable_automatic_code_signing(
+      path: "TheLastProject.xcodeproj"
+    )
+    import_certificate(
+      keychain_name: "ios-build.keychain",
+      keychain_password: ENV["KEYCHAIN_PASS"],
+      certificate_path: "./scripts/certs/dis.p12",
+      certificate_password: ENV["CERT_PASS"]
+    )
+    update_project_provisioning(
+      xcodeproj: "TheLastProject.xcodeproj",
+      profile: "./scripts/profiles/TheLastProject_AdHoc.mobileprovision",
+      target_filter: "TheLastProject",
+      build_configuration: "Release",
+    )
+    build_ios_app(
+      scheme: "TheLastProject_Release", 
+      workspace: "TheLastProject.xcworkspace",
+      configuration: "Release", 
+      export_method: "ad-hoc",
+      output_directory: "./build",
+      silent: true,
+      clean: true,
+      skip_profile_detection: true,
+      export_options: {
+        provisioningProfiles: { "com.fx.thelastproject": "TheLastProject_AdHoc" }
+      }
+    )
+    create_release_notes(format: 'Appstore: %h %s')
+    upload_fabric(groups: "release")
+    enable_automatic_code_signing(
+      path: "TheLastProject.xcodeproj"
+    )
+  end
+
+  desc "Upload Fabric"
+  private_lane :upload_fabric do |options|
+    crashlytics(
+      api_token: ENV["FABRIC_API_KEY"],
+      build_secret: ENV["FABRIC_BUILD_SECRET"],
+      notes_path: "./fastlane/release_notes.txt",
+      groups: ["#{options[:groups]}"]
+    )
+  end
+
+  desc "Create release notes"
+    private_lane :create_release_notes do |options|
+    sh "git log -1 --pretty=tformat:\"#{options[:format]}\" > release_notes.txt"
+  end
+
+  desc "Make build Folder"
+  private_lane :make_build_folder do
+    sh "mkdir -p ./build"
+  end
+end

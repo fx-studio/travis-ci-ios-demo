@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#Log debug branch
+BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+
+if [ "$TRAVIS_BRANCH" == "develop" ]
+then
+  echo "********** BUILD DEV **********"
+  bundle exec fastlane build_dev
+elif [ "$TRAVIS_BRANCH" == "master" ]
+then
+  echo "********** BUILD STAGING **********"
+  bundle exec fastlane build_staging
+elif [[ "$TRAVIS_BRANCH" == "release"* ]]
+then
+  echo "********** BUILD RELEASE **********"
+  bundle exec fastlane build_release
+else
+  echo "NOTHING"
+fi

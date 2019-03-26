@@ -1,0 +1,65 @@
+[
+  {
+    "character" : null,
+    "file" : "\/Users\/tienlp\/FXWorking\/iOSTeam\/demo_ios_ci\/TheLastProject\/Delegate\/AppDelegate.swift",
+    "line" : 16,
+    "reason" : "Line should be 110 characters or less: currently 145 characters",
+    "rule_id" : "line_length",
+    "severity" : "Warning",
+    "type" : "Line Length"
+  },
+  {
+    "character" : null,
+    "file" : "\/Users\/tienlp\/FXWorking\/iOSTeam\/demo_ios_ci\/TheLastProjectTests\/TheLastProjectTests.swift",
+    "line" : 18,
+    "reason" : "Line should be 110 characters or less: currently 111 characters",
+    "rule_id" : "line_length",
+    "severity" : "Warning",
+    "type" : "Line Length"
+  },
+  {
+    "character" : null,
+    "file" : "\/Users\/tienlp\/FXWorking\/iOSTeam\/demo_ios_ci\/TheLastProject\/Controllers\/ViewController.swift",
+    "line" : 32,
+    "reason" : "Files should have a single trailing newline.",
+    "rule_id" : "trailing_newline",
+    "severity" : "Warning",
+    "type" : "Trailing Newline"
+  },
+  {
+    "character" : null,
+    "file" : "\/Users\/tienlp\/FXWorking\/iOSTeam\/demo_ios_ci\/TheLastProject\/Controllers\/ViewController.swift",
+    "line" : 16,
+    "reason" : "Lines should not have trailing whitespace.",
+    "rule_id" : "trailing_whitespace",
+    "severity" : "Warning",
+    "type" : "Trailing Whitespace"
+  },
+  {
+    "character" : null,
+    "file" : "\/Users\/tienlp\/FXWorking\/iOSTeam\/demo_ios_ci\/TheLastProjectUITests\/TheLastProjectUITests.swift",
+    "line" : 19,
+    "reason" : "Line should be 110 characters or less: currently 131 characters",
+    "rule_id" : "line_length",
+    "severity" : "Warning",
+    "type" : "Line Length"
+  },
+  {
+    "character" : null,
+    "file" : "\/Users\/tienlp\/FXWorking\/iOSTeam\/demo_ios_ci\/TheLastProjectUITests\/TheLastProjectUITests.swift",
+    "line" : 22,
+    "reason" : "Line should be 110 characters or less: currently 182 characters",
+    "rule_id" : "line_length",
+    "severity" : "Warning",
+    "type" : "Line Length"
+  },
+  {
+    "character" : null,
+    "file" : "\/Users\/tienlp\/FXWorking\/iOSTeam\/demo_ios_ci\/TheLastProjectUITests\/TheLastProjectUITests.swift",
+    "line" : 26,
+    "reason" : "Line should be 110 characters or less: currently 111 characters",
+    "rule_id" : "line_length",
+    "severity" : "Warning",
+    "type" : "Line Length"
+  }
+]

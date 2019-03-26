@@ -1,0 +1,22 @@
+language: objective-c
+osx_image: xcode10.1
+cache:
+  - bundler
+  - cocoapods
+xcode_workspace: TheLastProject.xcworkspace
+xcode_scheme: TheLastProject_Development
+xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone X
+before_install:
+  - bundle install
+  - gem install linterbot
+  - bundle exec pod install --repo-update
+install:
+  - set -o pipefail
+  - sudo systemsetup -settimezone Asia/Ho_Chi_Minh
+  - bundle install --path=vendor/bundle --jobs 4 --retry 3
+before_script:
+  - chmod a+x ./scripts/add-key.sh
+  - sh ./scripts/add-key.sh
+script:
+  - ./scripts/linter
+  - ./scripts/run

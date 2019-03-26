@@ -1,0 +1,18 @@
+//
+//  Staging.xcconfig
+//  TheLastProject
+//
+//  Created by Tien Le P. on 3/18/19.
+//  Copyright © 2019 Tien Le P. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+IS_APP_NAME = Project (Staging)
+IS_APP_VERSION = 0.2.0
+IS_APP_BUNDLE_ID = com.fx.thelastproject
+
+BACKEND_URL = http:\/\/api.intensifystudio.com/staging
+CONSUMER_KEY = ck_a57e4fa2e14c12f400371cf2951ec3dea5_staging
+CONSUMER_SECRET = cs_c847caa35ce1041e9c69d239141f13f63bb22b_staging
